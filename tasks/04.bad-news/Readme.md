@@ -767,7 +767,7 @@ public IActionResult CreateArticle([FromForm] IndexViewModel model)
 Но благодаря tag-хелперу `<form>`, можно сделать это иначе.
 Добавь в тег `<form>` два атрибута:
 ```cs
-<form asp-controller="Editor" asp-action="CreateArticle"
+<form asp-controller="Editor" asp-action="CreateArticle">
 ```
 и форма будет отправляться по кнопке «Отправить».
 
