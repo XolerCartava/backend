@@ -21,9 +21,11 @@ namespace BadNews
             return View(model);
         }
 
-        public IActionResult Index(int pageIndex = 0)
+        public IActionResult Index(int? year, int pageIndex = 0)
         {
-            var model = newsModelBuilder.BuildIndexModel(pageIndex, true, null);
+            var model = (year == null) ? 
+                newsModelBuilder.BuildIndexModel(pageIndex, true, year):
+                newsModelBuilder.BuildIndexModel(pageIndex, false, year);
             if (model == null)
                 return NotFound();
             return View(model);

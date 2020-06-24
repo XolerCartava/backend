@@ -1,0 +1,21 @@
+﻿@model IList<int>
+<div class="p-4 archive-links-container">
+    <h3>Архив новостей</h3>
+    <ol class="list-unstyled mb-0">
+        <li>
+            <a asp-route-year="@(DateTime.Now.Year)">
+                Новости этого года
+            </a>
+        </li>
+        <li>
+            <a asp-route-year="@(2019)">
+                Новости за 2019
+            </a>
+        </li>
+        <li>
+            <a asp-route-year="@(2018)">
+                Новости за 2018
+            </a>
+        </li>
+    </ol>
+</div>
