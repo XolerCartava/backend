@@ -22,6 +22,7 @@ namespace BadNews
         private readonly IWebHostEnvironment env;
         private readonly IConfiguration configuration;
 
+
         // В конструкторе уже доступна информация об окружении и конфигурация
         public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
@@ -29,18 +30,24 @@ namespace BadNews
             this.configuration = configuration;
         }
 
+
         // В этом методе добавляются сервисы в DI-контейнер
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<INewsRepository, NewsRepository>();
             services.AddSingleton<INewsModelBuilder, NewsModelBuilder>();
             services.AddControllersWithViews();
+
         }
 
         // В этом методе конфигурируется последовательность обработки HTTP-запроса
         public void Configure(IApplicationBuilder app)
         {
-            app.UseDeveloperExceptionPage();
+            if (env.IsDevelopment())
+                app.UseDeveloperExceptionPage();
+            else
+                app.UseExceptionHandler("/Errors/Exception");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
@@ -68,6 +75,7 @@ namespace BadNews
                     controller = "Errors",
                     action = "StatusCode"
                 });
+                endpoints.MapControllerRoute("default", "{controller}/{action}");
             });
 
             // Остальные запросы — 404 Not Found
@@ -92,6 +100,7 @@ namespace BadNews
 
             // Результат записывается в ответ
             await context.Response.WriteAsync(pageHtml);
+
         }
 
         private static string BuildIndexPageHtml(IndexModel model)

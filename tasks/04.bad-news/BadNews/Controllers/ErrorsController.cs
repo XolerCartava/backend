@@ -8,6 +8,11 @@ namespace BadNews
         {
             return View(code);
         }
+
+        public IActionResult Exception()
+        {
+            return View(null,HttpContext.TraceIdentifier);
+        }
     }
 }
 
