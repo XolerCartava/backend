@@ -37,7 +37,9 @@ namespace BadNews
         {
             services.AddSingleton<INewsRepository, NewsRepository>();
             services.AddSingleton<INewsModelBuilder, NewsModelBuilder>();
-            services.AddControllersWithViews();
+            var mvc = services.AddControllersWithViews();
+            if (env.IsDevelopment())
+                mvc.AddRazorRuntimeCompilation();
 
         }
 
@@ -57,7 +59,7 @@ namespace BadNews
 
             app.Map("/news", newsApp =>
             {
-                newsApp.Map("/fullarticle", fullArticleApp =>
+                app.Map("/news/fullarticle", fullArticleApp =>
                 {
                     fullArticleApp.Run(RenderFullArticlePage);
                 });
@@ -65,10 +67,10 @@ namespace BadNews
                 newsApp.Run(RenderIndexPage);
             });
 
-            app.MapWhen(context => context.Request.Path == "/", rootPathApp =>
-            {
-                rootPathApp.Run(RenderIndexPage);
-            });
+            //app.MapWhen(context => context.Request.Path == "/", rootPathApp =>
+            //{
+            //    rootPathApp.Run(RenderIndexPage);
+            //});
 
             app.UseRouting();
             app.UseEndpoints(endpoints =>
@@ -78,7 +80,7 @@ namespace BadNews
                     controller = "Errors",
                     action = "StatusCode"
                 });
-                endpoints.MapControllerRoute("default", "{controller}/{action}");
+                endpoints.MapControllerRoute("default", "{controller=News}/{action=Index}");
             });
 
             // Остальные запросы — 404 Not Found
