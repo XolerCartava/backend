@@ -57,15 +57,15 @@ namespace BadNews
             app.UseSerilogRequestLogging();
             app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
 
-            app.Map("/news", newsApp =>
-            {
-                app.Map("/news/fullarticle", fullArticleApp =>
-                {
-                    fullArticleApp.Run(RenderFullArticlePage);
-                });
+            //app.Map("/news", newsApp =>
+            //{
+            //    app.Map("/news/fullarticle", fullArticleApp =>
+            //    {
+            //        fullArticleApp.Run(RenderFullArticlePage);
+            //    });
 
-                newsApp.Run(RenderIndexPage);
-            });
+            //    newsApp.Run(RenderIndexPage);
+            //});
 
             //app.MapWhen(context => context.Request.Path == "/", rootPathApp =>
             //{
@@ -80,7 +80,7 @@ namespace BadNews
                     controller = "Errors",
                     action = "StatusCode"
                 });
-                endpoints.MapControllerRoute("default", "{controller=News}/{action=Index}");
+                endpoints.MapControllerRoute("default", "{controller=News}/{action=Index}/{id?}");
             });
 
             // Остальные запросы — 404 Not Found
